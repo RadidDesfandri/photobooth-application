@@ -2,7 +2,7 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom'
 
 // Example hook untuk mengecek autentikasi
 const useAuth = () => {
-  const user = { loggedIn: false } // Ganti logic ini nanti
+  const user = { loggedIn: true }
   return user && user.loggedIn
 }
 
