@@ -1,0 +1,49 @@
+import { createHashRouter, Navigate } from 'react-router-dom'
+import { lazy, Suspense } from 'react'
+import Loading from '@renderer/components/loading'
+import Navigation from '@renderer/layouts/navigation'
+
+const Home = lazy(() => import('../pages/home/home.index'))
+const Capture = lazy(() => import('../pages/capture/capture.index'))
+const Login = lazy(() => import('../pages/login/login.index'))
+const Register = lazy(() => import('../pages/register/register.index'))
+
+const Loadable = (Component: React.ComponentType) => (
+  <Suspense fallback={<Loading />}>
+    <Component />
+  </Suspense>
+)
+
+// Define the routes using createHashRouter
+const router = createHashRouter([
+  {
+    path: '/',
+    element: <Navigation />,
+    children: [
+      {
+        index: true,
+        element: Loadable(Home)
+      },
+      {
+        path: 'live-capture',
+        element: Loadable(Capture)
+      },
+      {
+        path: 'login',
+        element: Loadable(Login)
+      },
+      {
+        path: 'register',
+        element: Loadable(Register)
+      },
+
+      // Redirect kalau halaman tidak ditemukan
+      {
+        path: '*',
+        element: <Navigate to="/" replace />
+      }
+    ]
+  }
+])
+
+export default router
