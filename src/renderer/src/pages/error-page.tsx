@@ -1,7 +1,8 @@
 import { Button } from '@renderer/components/ui/button'
+import { JSX } from 'react'
 import { useRouteError, isRouteErrorResponse, Link } from 'react-router-dom'
 
-function ErrorPage() {
+function ErrorPage(): JSX.Element {
   const error = useRouteError()
   let errorMessage: string
 
@@ -17,12 +18,12 @@ function ErrorPage() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen w-full bg-red-50 text-red-900 p-10">
-      <h1 className="text-4xl font-bold mb-4">Oops! Terjadi Masalah</h1>
-      <p className="text-lg mb-6">Maaf, aplikasi mengalami gangguan.</p>
+    <div className="flex h-screen w-full flex-col items-center justify-center bg-red-50 p-10 text-red-900">
+      <h1 className="mb-4 text-4xl font-bold">Oops! Terjadi Masalah</h1>
+      <p className="mb-6 text-lg">Maaf, aplikasi mengalami gangguan.</p>
 
-      <div className="bg-white p-4 rounded shadow mb-6 border border-red-200">
-        <code className="text-red-600 font-mono">{errorMessage}</code>
+      <div className="mb-6 rounded border border-red-200 bg-white p-4 shadow">
+        <code className="font-mono text-red-600">{errorMessage}</code>
       </div>
 
       <div className="flex gap-4">

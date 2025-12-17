@@ -1,12 +1,13 @@
+import { JSX } from 'react'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 
 // Example hook untuk mengecek autentikasi
-const useAuth = () => {
+const useAuth = (): boolean => {
   const user = { loggedIn: true }
   return user && user.loggedIn
 }
 
-function ProtectedRoute() {
+function ProtectedRoute(): JSX.Element {
   const isAuth = useAuth()
   const location = useLocation()
 

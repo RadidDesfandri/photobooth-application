@@ -1,8 +1,8 @@
-const Loading = () => {
+import { JSX } from 'react'
+
+const Loading = (): JSX.Element => {
   return (
-    <div
-      style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}
-    >
+    <div className="flex h-screen w-full items-center justify-center">
       <p>Loading...</p>
     </div>
   )
