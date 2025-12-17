@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
+import { JSX, useEffect, useState } from 'react'
 
-const NetworkStatus = () => {
+const NetworkStatus = (): JSX.Element | null => {
   const [isOnline, setIsOnline] = useState(navigator.onLine)
 
   useEffect(() => {
-    const handleOnline = () => setIsOnline(true)
-    const handleOffline = () => setIsOnline(false)
+    const handleOnline = (): void => setIsOnline(true)
+    const handleOffline = (): void => setIsOnline(false)
 
     window.addEventListener('online', handleOnline)
     window.addEventListener('offline', handleOffline)
@@ -19,7 +19,7 @@ const NetworkStatus = () => {
   if (isOnline) return null
 
   return (
-    <div className="fixed bottom-0 w-full bg-red-800 text-white text-center p-2 z-50 font-semibold font-mono">
+    <div className="fixed bottom-0 z-50 w-full bg-red-800 p-2 text-center font-mono font-semibold text-white">
       ⚠️ Koneksi Terputus. Memeriksa jaringan...
     </div>
   )

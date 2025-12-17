@@ -11,8 +11,8 @@ const Navigation = (): JSX.Element => {
 
   return (
     <div>
-      <nav className="flex items-center justify-between px-8 p-4 mb-3 bg-neutral-900 text-white shadow-md">
-        <h1 className="font-medium text-3xl">
+      <nav className="mb-3 flex items-center justify-between bg-neutral-900 p-4 px-8 text-white shadow-md">
+        <h1 className="text-3xl font-medium">
           {mappingToTitle[location.pathname.split('/')[1]] || 'Unknown Page'}
         </h1>
 

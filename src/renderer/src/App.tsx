@@ -39,8 +39,8 @@ function App(): React.JSX.Element {
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6 text-gray-800">User List (via IPC)</h1>
+      <div className="mx-auto max-w-4xl">
+        <h1 className="mb-6 text-3xl font-bold text-gray-800">User List (via IPC)</h1>
 
         <Button onClick={fetchUsers} variant="destructive" className="mb-4">
           Refresh
@@ -48,11 +48,11 @@ function App(): React.JSX.Element {
 
         {loading && <p className="text-gray-600">Loading...</p>}
 
-        {error && <p className="text-red-500 bg-red-50 p-4 rounded">Error: {error}</p>}
+        {error && <p className="rounded bg-red-50 p-4 text-red-500">Error: {error}</p>}
 
         <div className="grid gap-4">
           {users.map((user) => (
-            <div key={user.id} className="bg-white p-4 rounded shadow">
+            <div key={user.id} className="rounded bg-white p-4 shadow">
               <h2 className="text-xl font-semibold text-gray-800">{user.name}</h2>
               <p className="text-gray-600">📧 {user.email}</p>
               <p className="text-gray-600">📱 {user.phone}</p>
