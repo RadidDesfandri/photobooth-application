@@ -1,9 +1,11 @@
-import type { PingCamera } from '../../types/camera.type'
-import { fetchCameraService } from '../libs/axios'
+import { PingCamera } from '../../types/camera.type'
+import { apiRequest } from '../libs/request'
 
-const handlePingCamera = async (): Promise<string> => {
-  const response = await fetchCameraService.get<PingCamera>('/ping')
-  return response.data
+export const CameraService = {
+  pingCamera() {
+    return apiRequest<PingCamera>({
+      url: '/ping',
+      method: 'GET'
+    })
+  }
 }
-
-export { handlePingCamera }

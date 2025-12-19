@@ -1,8 +1,10 @@
 import { ipcMain } from 'electron'
-import { handlePingCamera } from '../services/camera.service'
+import { CameraService } from '../services/camera.service'
 
 const registerCameraHandler = (): void => {
-  ipcMain.handle('ping-camera', handlePingCamera)
+  ipcMain.handle('ping-camera', async () => {
+    return await CameraService.pingCamera()
+  })
 }
 
 export { registerCameraHandler }

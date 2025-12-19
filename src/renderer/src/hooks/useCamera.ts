@@ -1,13 +1,11 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, UseQueryResult } from '@tanstack/react-query'
+import { ApiResponse } from 'src/types/api.type'
+import { PingCamera } from 'src/types/camera.type'
 
-const usePingCamera = (): ReturnType<typeof useQuery> => {
+const usePingCamera = (): UseQueryResult<ApiResponse<PingCamera>, Error> => {
   return useQuery({
     queryKey: ['ping-camera'],
-    queryFn: async () => {
-      const response = await window.api.pingCamera()
-
-      return response
-    }
+    queryFn: async () => window.api.pingCamera()
   })
 }
 
