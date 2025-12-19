@@ -1,8 +1,8 @@
 import { ipcMain } from 'electron'
-import { handleFetchUsers } from '../services/camera.service'
+import { handlePingCamera } from '../services/camera.service'
 
 const registerCameraHandler = (): void => {
-  ipcMain.handle('fetch-users', handleFetchUsers)
+  ipcMain.handle('ping-camera', handlePingCamera)
 }
 
 export { registerCameraHandler }

@@ -3,7 +3,7 @@ import { electronAPI } from '@electron-toolkit/preload'
 
 // Custom APIs for renderer
 const api = {
-  fetchUsers: () => ipcRenderer.invoke('fetch-users')
+  pingCamera: () => ipcRenderer.invoke('ping-camera')
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to
