@@ -3,7 +3,8 @@ import { Outlet, Link, useLocation } from 'react-router-dom'
 
 const mappingToTitle = {
   '': 'Home',
-  'live-capture': 'Live Capture'
+  'live-capture': 'Live Capture',
+  tes: 'Testing Page'
 }
 
 const Navigation = (): JSX.Element => {
@@ -19,6 +20,7 @@ const Navigation = (): JSX.Element => {
         <div className="space-x-4">
           <Link to="/">Home</Link>
           <Link to="/live-capture">Live Capture</Link>
+          <Link to="/tes">Tes</Link>
         </div>
       </nav>
 
