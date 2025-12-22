@@ -3,6 +3,15 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@theme {
+  --color-success: oklch(0.623 0.17 149.18);
+  --color-success-foreground: oklch(0.985 0 0);
+  --color-warning: oklch(0.795 0.184 86.04);
+  --color-warning-foreground: oklch(0.205 0 0);
+
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);

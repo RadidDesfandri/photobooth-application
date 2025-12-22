@@ -1,7 +1,7 @@
+import GlobalError from '@renderer/components/common/global-error'
 import ProtectedRoute from '@renderer/components/protected-route'
 import Loadable from '@renderer/layouts/loadable'
 import RootWrapper from '@renderer/layouts/root-wrapper'
-import ErrorPage from '@renderer/pages/error-page'
 import { lazy } from 'react'
 import { createHashRouter, Navigate } from 'react-router-dom'
 
@@ -16,7 +16,7 @@ const router = createHashRouter([
   {
     path: '/',
     element: <RootWrapper />,
-    errorElement: <ErrorPage />,
+    errorElement: <GlobalError />,
     children: [
       // Protected routes
       {

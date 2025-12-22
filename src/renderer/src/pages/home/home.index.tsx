@@ -1,45 +1,42 @@
+import { Button } from '@renderer/components/ui/button'
 import { JSX } from 'react'
 import { usePingCamera } from '../../hooks/useCamera'
-import { Button } from '@renderer/components/ui/button'
+import BaseLayout from '@renderer/layouts/base-layout'
+import { useNavigate } from 'react-router-dom'
+import Loading from '@renderer/components/loading'
 
 function HomeIndex(): JSX.Element {
-  const { data, isPending, isError, error, refetch } = usePingCamera()
+  const { data, isPending, refetch } = usePingCamera()
+  const navigate = useNavigate()
 
-  if (isPending) {
-    return (
-      <div className="loading-container">
-        <div>Loading camera status...</div>
+  const HomeHeader: JSX.Element = (
+    <>
+      <div className="flex items-center gap-4">
+        <h1 className="text-xl font-bold">Dashboard Photobooth</h1>
       </div>
-    )
-  }
 
-  if (isError) {
-    return (
-      <div className="flex w-fit flex-col gap-2">
-        <h2>Connection Error</h2>
-        <p className="text-red-500">{error.message}</p>
-        <Button onClick={() => refetch()}>Retry</Button>
+      <div className="flex items-center gap-2">
+        <span className="text-sm text-gray-300">Halo, Admin</span>
+        <Button variant="outline" onClick={() => navigate('/live-capture')}>
+          Live Booth
+        </Button>
       </div>
-    )
-  }
-
-  if (!data?.success) {
-    return (
-      <div className="flex w-fit flex-col gap-2">
-        <h2>Service Error</h2>
-        <p className="text-red-500">{data?.error?.message || 'Unknown error'}</p>
-        <Button onClick={() => refetch()}>Retry</Button>
-      </div>
-    )
-  }
+    </>
+  )
 
   return (
-    <div className="flex w-fit flex-col gap-2">
-      <h1>Camera Status</h1>
-      <div className="status-indicator success">● Connected</div>
-      <pre>{JSON.stringify(data.data, null, 2)}</pre>
-      <Button onClick={() => refetch()}>Refresh</Button>
-    </div>
+    <BaseLayout header={HomeHeader}>
+      {isPending ? (
+        <Loading />
+      ) : (
+        <div className="flex w-fit flex-col gap-2">
+          <h1>Camera Status</h1>
+          <div className="status-indicator success">● Connected</div>
+          <pre>{JSON.stringify(data?.data, null, 2)}</pre>
+          <Button onClick={() => refetch()}>Refresh</Button>
+        </div>
+      )}
+    </BaseLayout>
   )
 }
 
