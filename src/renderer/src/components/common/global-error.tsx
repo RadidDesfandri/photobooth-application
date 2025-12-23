@@ -49,7 +49,11 @@ function GlobalError(): JSX.Element {
         </div>
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
-          <Button onClick={() => window.location.reload()} className="cursor-pointer">
+          <Button
+            variant="outline"
+            onClick={() => window.location.reload()}
+            className="cursor-pointer text-black"
+          >
             <RotateCw className="mr-2 h-4 w-4" />
             Muat Ulang
           </Button>
@@ -57,7 +61,7 @@ function GlobalError(): JSX.Element {
           <Button
             variant="outline"
             onClick={() => navigate('/', { replace: true })}
-            className="cursor-pointer"
+            className="cursor-pointer text-black"
           >
             <House /> Ke Beranda
           </Button>
