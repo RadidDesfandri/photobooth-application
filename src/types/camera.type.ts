@@ -1,8 +1,28 @@
 import * as z from 'zod'
-
-const pingCameraSchema = z.string()
+import {
+  cameraStatusSchema,
+  captureCameraSchema,
+  connectCameraSchema,
+  disconnectCameraSchema,
+  liveViewActionSchema,
+  liveViewFrameSchema,
+  pingCameraSchema
+} from '../schemas/camera.schema'
 
 type PingCamera = z.infer<typeof pingCameraSchema>
+type CameraStatus = z.infer<typeof cameraStatusSchema>
+type ConnectCamera = z.infer<typeof connectCameraSchema>
+type DisconnectCamera = z.infer<typeof disconnectCameraSchema>
+type CaptureCamera = z.infer<typeof captureCameraSchema>
+type LiveViewAction = z.infer<typeof liveViewActionSchema>
+type LiveViewFrame = z.infer<typeof liveViewFrameSchema>
 
-export type { PingCamera }
-export { pingCameraSchema }
+export type {
+  PingCamera,
+  CameraStatus,
+  ConnectCamera,
+  DisconnectCamera,
+  CaptureCamera,
+  LiveViewAction,
+  LiveViewFrame
+}

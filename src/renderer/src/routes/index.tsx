@@ -10,6 +10,7 @@ const Capture = lazy(() => import('../pages/capture/capture.index'))
 const Login = lazy(() => import('../pages/login/login.index'))
 const Register = lazy(() => import('../pages/register/register.index'))
 const TesIndex = lazy(() => import('../pages/tes.index'))
+const CameraControl = lazy(() => import('../pages/camera-control.index'))
 
 // Define the routes using createHashRouter
 const router = createHashRouter([
@@ -45,6 +46,10 @@ const router = createHashRouter([
       {
         path: 'tes',
         element: Loadable(TesIndex)
+      },
+      {
+        path: 'camera-control',
+        element: Loadable(CameraControl)
       },
 
       // Redirect kalau halaman tidak ditemukan

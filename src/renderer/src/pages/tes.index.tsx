@@ -1,23 +1,41 @@
-import React, { useState } from 'react'
-import { RefreshCw, CheckCircle, XCircle, Clock, Zap, AlertCircle } from 'lucide-react'
-import { usePingCamera } from '@renderer/hooks/useCamera'
 import { Button } from '@renderer/components/ui/button'
+import { useCameraStatus, usePingCamera } from '@renderer/hooks/useCamera'
 import { cn } from '@renderer/lib/utils'
+import { AlertCircle, CheckCircle, Clock, RefreshCw, XCircle, Zap } from 'lucide-react'
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function TesIndex(): React.JSX.Element {
-  const { data, refetch, error, isError, isPending } = usePingCamera()
   const [selectedApi, setSelectedApi] = useState('ping')
+  const navigate = useNavigate()
+
+  const pingResult = usePingCamera()
+  const statusResult = useCameraStatus()
 
   const apiList = [
-    { id: 'ping', name: 'Ping Camera', method: 'GET', hook: usePingCamera },
+    { id: 'ping', name: 'Ping Camera', method: 'GET', hook: pingResult },
     { id: 'connect', name: 'Connect Camera', method: 'POST', hook: null },
     { id: 'disconnect', name: 'Disconnect Camera', method: 'POST', hook: null },
-    { id: 'status', name: 'Get Camera Status', method: 'GET', hook: null },
+    { id: 'status', name: 'Get Camera Status', method: 'GET', hook: statusResult },
     { id: 'capture', name: 'Capture Image', method: 'POST', hook: null },
     { id: 'liveview/start', name: 'Start Liveview', method: 'POST', hook: null },
     { id: 'liveview/stop', name: 'Stop Liveview', method: 'POST', hook: null },
     { id: 'liveview/frame', name: 'Get Liveview Frame', method: 'GET', hook: null }
   ]
+
+  // const currentApi = useMemo(() => {
+  //   return apiList.find((api) => api.id === selectedApi)
+  // }, [selectedApi])
+
+  const currentApi = apiList.find((api) => api.id === selectedApi)
+
+  const { data, refetch, error, isError, isPending } = currentApi?.hook || {
+    data: null,
+    refetch: () => {},
+    error: null,
+    isError: false,
+    isPending: false
+  }
 
   const getMethodColor = (method: string): string => {
     const colors: Record<string, string> = {
@@ -34,9 +52,14 @@ function TesIndex(): React.JSX.Element {
       <div className="mx-auto max-w-6xl">
         {/* Header */}
         <div className="mb-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-          <div className="mb-2 flex items-center gap-3">
-            <Zap className="h-8 w-8 text-indigo-600" />
-            <h1 className="text-3xl font-bold text-slate-900">API Testing Dashboard</h1>
+          <div className="mb-2 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <Zap className="h-8 w-8 text-indigo-600" />
+              <h1 className="text-3xl font-bold text-slate-900">API Testing Dashboard</h1>
+            </div>
+            <Button onClick={() => navigate('/')} variant="link" className="bg-background">
+              Back to home
+            </Button>
           </div>
           <p className="text-slate-600">Test dan monitor semua API endpoints dalam satu tempat</p>
         </div>
@@ -52,7 +75,7 @@ function TesIndex(): React.JSX.Element {
                     key={api.id}
                     onClick={() => setSelectedApi(api.id)}
                     disabled={!api.hook}
-                    className={`w-full rounded-lg border px-4 py-3 text-left transition-all ${
+                    className={`w-full cursor-pointer rounded-lg border px-4 py-3 text-left transition-all ${
                       selectedApi === api.id
                         ? 'border-indigo-300 bg-indigo-50 shadow-sm'
                         : 'border-slate-200 bg-white hover:border-slate-300'
@@ -108,7 +131,7 @@ function TesIndex(): React.JSX.Element {
             <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
               <div className="mb-4 flex items-center justify-between">
                 <h2 className="text-lg font-semibold text-slate-900">Test Configuration</h2>
-                <Button disabled={isPending} onClick={() => refetch()}>
+                <Button disabled={isPending || !currentApi?.hook} onClick={() => refetch()}>
                   <RefreshCw className={cn('h-4 w-4', isPending ? 'animate-spin' : '')} />
                   {isPending ? 'Testing...' : 'Run Test'}
                 </Button>
