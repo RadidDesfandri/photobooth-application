@@ -1,4 +1,5 @@
 // components/CameraControl.tsx
+import { Button } from '@renderer/components/ui/button'
 import {
   useCameraStatus,
   useCaptureImage,
@@ -10,9 +11,11 @@ import {
   useStopLiveView
 } from '@renderer/hooks/useCamera'
 import { JSX, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function CameraControl(): JSX.Element {
   const [isLiveViewActive, setIsLiveViewActive] = useState(false)
+  const navigate = useNavigate()
 
   // Queries
   const { data: pingData, isLoading: isPinging } = usePingCamera()
@@ -83,6 +86,8 @@ function CameraControl(): JSX.Element {
   return (
     <div className="space-y-4 p-6">
       <h2 className="text-2xl font-bold">Camera Control</h2>
+
+      <Button onClick={() => navigate('/')}>Back to Home</Button>
 
       {/* Status Display */}
       <div className="rounded-lg bg-gray-100 p-4 text-black">

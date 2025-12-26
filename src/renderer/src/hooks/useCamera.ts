@@ -6,6 +6,7 @@ import {
   useQueryClient,
   UseQueryResult
 } from '@tanstack/react-query'
+import { useEffect } from 'react'
 import { ApiResponse } from 'src/types/api.type'
 import {
   CameraStatus,
@@ -178,6 +179,35 @@ const useStopLiveView = (): UseMutationResult<
   })
 }
 
+const useAutoConnectCamera = (): {
+  statusData: ApiResponse<CameraStatus> | undefined
+  isLoading: boolean
+  isConnecting: boolean
+  isConnected: boolean
+} => {
+  const statusQuery = useCameraStatus({
+    refetchInterval: 2000
+  })
+
+  const { mutate: connect, isPending: isPendingConnect } = useConnectCamera()
+
+  const isConnected = statusQuery.data?.data?.isConnected
+  const shouldConnect = !statusQuery.isLoading && !isConnected && !isPendingConnect
+
+  useEffect(() => {
+    if (shouldConnect) {
+      connect()
+    }
+  }, [shouldConnect, connect])
+
+  return {
+    statusData: statusQuery.data,
+    isLoading: statusQuery.isLoading,
+    isConnecting: isPendingConnect,
+    isConnected: isConnected ?? false
+  }
+}
+
 export {
   usePingCamera,
   useCameraStatus,
@@ -186,5 +216,6 @@ export {
   useDisconnectCamera,
   useCaptureImage,
   useStartLiveView,
-  useStopLiveView
+  useStopLiveView,
+  useAutoConnectCamera
 }

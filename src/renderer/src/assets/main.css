@@ -10,6 +10,27 @@
   --color-warning-foreground: oklch(0.205 0 0);
 
   --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+
+  --animate-countdown: countdown 1s ease-in-out infinite;
+
+  @keyframes countdown {
+    0% {
+      opacity: 0;
+      transform: scale(1.5);
+    }
+    20% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    80% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+  }
 }
 
 :root {

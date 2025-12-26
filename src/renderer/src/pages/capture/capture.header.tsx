@@ -4,8 +4,35 @@ import { ArrowLeft } from 'lucide-react'
 import { JSX } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const CaptureHeader = (): JSX.Element => {
+interface CaptureHeaderProps {
+  isCameraConnected: boolean
+  isPrinterConnected: boolean
+  isLoadingCamera: boolean
+  isLoadingPrinter: boolean
+}
+
+const CaptureHeader = ({
+  isCameraConnected,
+  isPrinterConnected,
+  isLoadingCamera,
+  isLoadingPrinter
+}: CaptureHeaderProps): JSX.Element => {
   const navigate = useNavigate()
+
+  const statusCamera = isLoadingCamera
+    ? 'loading'
+    : isCameraConnected
+      ? 'connected'
+      : 'disconnected'
+
+  const statusPrinter = isLoadingPrinter
+    ? 'loading'
+    : isPrinterConnected
+      ? 'connected'
+      : 'disconnected'
+
+  const labelCamera = isCameraConnected ? 'Camera Connected' : 'Camera Not Detected'
+  const labelPrinter = isPrinterConnected ? 'Printer Ready' : 'Printer Not Found'
 
   return (
     <>
@@ -14,8 +41,8 @@ const CaptureHeader = (): JSX.Element => {
       </Button>
       <div>Logo</div>
       <div className="flex gap-2">
-        <StatusIndicator status="disconnected" label="Camera Not Detected" />
-        <StatusIndicator status="disconnected" label="Printer Not Found" />
+        <StatusIndicator status={statusCamera} label={labelCamera} />
+        <StatusIndicator status={statusPrinter} label={labelPrinter} />
       </div>
     </>
   )
