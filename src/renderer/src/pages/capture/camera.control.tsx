@@ -20,18 +20,21 @@ import {
 } from './camera.comp'
 import { SettingArrow, SettingPanelBackdrop } from './camera.setting'
 import { useCameraStore } from '@renderer/store/useCameraStore'
+import { useParams } from 'react-router-dom'
 
 interface CameraControlProps {
   statusData: CameraStatus
 }
 
 const CameraControl = ({ statusData }: CameraControlProps): JSX.Element => {
-  const { data: frameData } = useLiveViewFrame({
+  const { sessionId } = useParams<{ sessionId: string }>()
+
+  const { data: frameData } = useLiveViewFrame(sessionId!, {
     enabled: statusData.isLiveView,
     refetchInterval: 1000 / 30 // 30 FPS
   })
 
-  const { mutate: capture, isPending: isCapturing } = useCaptureImage()
+  const { mutate: capture, isPending: isCapturing } = useCaptureImage(sessionId!)
 
   const { focusPoint, handleFocusClick } = useFocusPoint()
   const { elementRef, isFullscreen, toggleFullscreen } = useElementFullScreen()

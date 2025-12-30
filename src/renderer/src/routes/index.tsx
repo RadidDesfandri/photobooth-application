@@ -11,6 +11,7 @@ const Login = lazy(() => import('../pages/login/login.index'))
 const Register = lazy(() => import('../pages/register/register.index'))
 const TesIndex = lazy(() => import('../pages/tes.index'))
 const CameraControl = lazy(() => import('../pages/camera-control.index'))
+const CreateSession = lazy(() => import('../pages/create-session/create.session.index'))
 
 // Define the routes using createHashRouter
 const router = createHashRouter([
@@ -28,7 +29,11 @@ const router = createHashRouter([
             element: Loadable(Home)
           },
           {
-            path: 'live-capture',
+            path: 'create-session',
+            element: Loadable(CreateSession)
+          },
+          {
+            path: 'live-capture/:sessionId',
             element: Loadable(Capture)
           }
         ]

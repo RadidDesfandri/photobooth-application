@@ -19,9 +19,9 @@ const registerCameraHandler = (): void => {
     }
   })
 
-  ipcMain.handle(ipcCameraKeys.cameraStatus, async () => {
+  ipcMain.handle(ipcCameraKeys.cameraStatus, async (_event, sessionId: string) => {
     try {
-      return await CameraService.getStatus()
+      return await CameraService.getStatus(sessionId)
     } catch (error) {
       console.error('[IPC Error] camera-status:', error)
       return {
@@ -35,9 +35,9 @@ const registerCameraHandler = (): void => {
     }
   })
 
-  ipcMain.handle(ipcCameraKeys.connect, async () => {
+  ipcMain.handle(ipcCameraKeys.connect, async (_event, sessionId: string) => {
     try {
-      return await CameraService.connect()
+      return await CameraService.connect(sessionId)
     } catch (error) {
       console.error('[IPC Error] connect-camera:', error)
       return {
@@ -51,9 +51,9 @@ const registerCameraHandler = (): void => {
     }
   })
 
-  ipcMain.handle(ipcCameraKeys.disconnect, async () => {
+  ipcMain.handle(ipcCameraKeys.disconnect, async (_event, sessionId: string) => {
     try {
-      return await CameraService.disconnect()
+      return await CameraService.disconnect(sessionId)
     } catch (error) {
       console.error('[IPC Error] disconnect-camera:', error)
       return {
@@ -67,9 +67,9 @@ const registerCameraHandler = (): void => {
     }
   })
 
-  ipcMain.handle(ipcCameraKeys.capture, async () => {
+  ipcMain.handle(ipcCameraKeys.capture, async (_event, sessionId: string) => {
     try {
-      return await CameraService.capture()
+      return await CameraService.capture(sessionId)
     } catch (error) {
       console.error('[IPC Error] camera-capture:', error)
       return {
@@ -83,9 +83,9 @@ const registerCameraHandler = (): void => {
     }
   })
 
-  ipcMain.handle(ipcCameraKeys.startLiveView, async () => {
+  ipcMain.handle(ipcCameraKeys.startLiveView, async (_event, sessionId: string) => {
     try {
-      return await CameraService.startLiveView()
+      return await CameraService.startLiveView(sessionId)
     } catch (error) {
       console.error('[IPC Error] start-liveview:', error)
       return {
@@ -99,9 +99,9 @@ const registerCameraHandler = (): void => {
     }
   })
 
-  ipcMain.handle(ipcCameraKeys.stopLiveView, async () => {
+  ipcMain.handle(ipcCameraKeys.stopLiveView, async (_event, sessionId: string) => {
     try {
-      return await CameraService.stopLiveView()
+      return await CameraService.stopLiveView(sessionId)
     } catch (error) {
       console.error('[IPC Error] camera-liveview-stop:', error)
       return {
@@ -115,9 +115,9 @@ const registerCameraHandler = (): void => {
     }
   })
 
-  ipcMain.handle(ipcCameraKeys.liveViewFrame, async () => {
+  ipcMain.handle(ipcCameraKeys.liveViewFrame, async (_event, sessionId: string) => {
     try {
-      return await CameraService.getLiveViewFrame()
+      return await CameraService.getLiveViewFrame(sessionId)
     } catch (error) {
       console.error('[IPC Error] camera-liveview-frame:', error)
       return {

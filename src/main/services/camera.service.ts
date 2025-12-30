@@ -38,10 +38,13 @@ export const CameraService = {
     return response
   },
 
-  async getStatus() {
+  async getStatus(sessionId: string) {
     const response = await apiRequest<CameraStatus>({
       url: '/status',
-      method: 'GET'
+      method: 'GET',
+      headers: {
+        'X-Session-Id': sessionId
+      }
     })
 
     if (response.success && response.data) {
@@ -64,10 +67,13 @@ export const CameraService = {
     return response
   },
 
-  async connect() {
+  async connect(sessionId: string) {
     const response = await apiRequest<ConnectCamera>({
       url: '/connect',
-      method: 'POST'
+      method: 'POST',
+      headers: {
+        'X-Session-Id': sessionId
+      }
     })
 
     if (response.success && response.data) {
@@ -89,10 +95,13 @@ export const CameraService = {
     return response
   },
 
-  async disconnect() {
+  async disconnect(sessionId: string) {
     const response = await apiRequest<DisconnectCamera>({
       url: '/disconnect',
-      method: 'POST'
+      method: 'POST',
+      headers: {
+        'X-Session-Id': sessionId
+      }
     })
 
     if (response.success && response.data) {
@@ -114,10 +123,13 @@ export const CameraService = {
     return response
   },
 
-  async capture() {
+  async capture(sessionId: string) {
     const response = await apiRequest<CaptureCamera>({
       url: '/capture',
-      method: 'POST'
+      method: 'POST',
+      headers: {
+        'X-Session-Id': sessionId
+      }
     })
 
     if (response.success && response.data) {
@@ -139,10 +151,13 @@ export const CameraService = {
     return response
   },
 
-  async startLiveView() {
+  async startLiveView(sessionId: string) {
     const response = await apiRequest<LiveViewAction>({
       url: '/liveview/start',
-      method: 'POST'
+      method: 'POST',
+      headers: {
+        'X-Session-Id': sessionId
+      }
     })
 
     if (response.success && response.data) {
@@ -164,10 +179,13 @@ export const CameraService = {
     return response
   },
 
-  async stopLiveView() {
+  async stopLiveView(sessionId: string) {
     const response = await apiRequest<LiveViewAction>({
       url: '/liveview/stop',
-      method: 'POST'
+      method: 'POST',
+      headers: {
+        'X-Session-Id': sessionId
+      }
     })
 
     if (response.success && response.data) {
@@ -189,10 +207,13 @@ export const CameraService = {
     return response
   },
 
-  async getLiveViewFrame() {
+  async getLiveViewFrame(sessionId: string) {
     const response = await apiRequest<LiveViewFrame>({
       url: '/liveview/frame',
-      method: 'GET'
+      method: 'GET',
+      headers: {
+        'X-Session-Id': sessionId
+      }
     })
 
     if (response.success && response.data) {

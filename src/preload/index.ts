@@ -6,13 +6,14 @@ import { ipcCameraKeys } from '../main/handlers/camera.config'
 // Custom APIs for renderer
 const api: IElectronAPI = {
   pingCamera: () => ipcRenderer.invoke(ipcCameraKeys.ping),
-  getCameraStatus: () => ipcRenderer.invoke(ipcCameraKeys.cameraStatus),
-  connectCamera: () => ipcRenderer.invoke(ipcCameraKeys.connect),
-  disconnectCamera: () => ipcRenderer.invoke(ipcCameraKeys.disconnect),
-  captureImage: () => ipcRenderer.invoke(ipcCameraKeys.capture),
-  startLiveView: () => ipcRenderer.invoke(ipcCameraKeys.startLiveView),
-  stopLiveView: () => ipcRenderer.invoke(ipcCameraKeys.stopLiveView),
-  getLiveViewFrame: () => ipcRenderer.invoke(ipcCameraKeys.liveViewFrame)
+  getCameraStatus: (sessionId: string) => ipcRenderer.invoke(ipcCameraKeys.cameraStatus, sessionId),
+  connectCamera: (sessionId: string) => ipcRenderer.invoke(ipcCameraKeys.connect, sessionId),
+  disconnectCamera: (sessionId: string) => ipcRenderer.invoke(ipcCameraKeys.disconnect, sessionId),
+  captureImage: (sessionId: string) => ipcRenderer.invoke(ipcCameraKeys.capture, sessionId),
+  startLiveView: (sessionId: string) => ipcRenderer.invoke(ipcCameraKeys.startLiveView, sessionId),
+  stopLiveView: (sessionId: string) => ipcRenderer.invoke(ipcCameraKeys.stopLiveView, sessionId),
+  // prettier-ignore
+  getLiveViewFrame: (sessionId: string) => ipcRenderer.invoke(ipcCameraKeys.liveViewFrame, sessionId)
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

@@ -12,13 +12,13 @@ import type {
 
 export interface IElectronAPI {
   pingCamera: () => Promise<ApiResponse<PingCamera>>
-  getCameraStatus: () => Promise<ApiResponse<CameraStatus>>
-  connectCamera: () => Promise<ApiResponse<ConnectCamera>>
-  disconnectCamera: () => Promise<ApiResponse<DisconnectCamera>>
-  captureImage: () => Promise<ApiResponse<CaptureCamera>>
-  startLiveView: () => Promise<ApiResponse<LiveViewAction>>
-  stopLiveView: () => Promise<ApiResponse<LiveViewAction>>
-  getLiveViewFrame: () => Promise<ApiResponse<LiveViewFrame>>
+  getCameraStatus: (sessionId: string) => Promise<ApiResponse<CameraStatus>>
+  connectCamera: (sessionId: string) => Promise<ApiResponse<ConnectCamera>>
+  disconnectCamera: (sessionId: string) => Promise<ApiResponse<DisconnectCamera>>
+  captureImage: (sessionId: string) => Promise<ApiResponse<CaptureCamera>>
+  startLiveView: (sessionId: string) => Promise<ApiResponse<LiveViewAction>>
+  stopLiveView: (sessionId: string) => Promise<ApiResponse<LiveViewAction>>
+  getLiveViewFrame: (sessionId: string) => Promise<ApiResponse<LiveViewFrame>>
 }
 
 declare global {

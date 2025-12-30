@@ -17,8 +17,8 @@ function HomeIndex(): JSX.Element {
 
       <div className="flex items-center gap-2">
         <span className="text-sm text-gray-300">Halo, Admin</span>
-        <Button variant="outline" onClick={() => navigate('/live-capture')}>
-          Live Booth
+        <Button variant="outline" onClick={() => navigate('/create-session')}>
+          Booth
         </Button>
       </div>
     </>

@@ -2,6 +2,7 @@ import { CircleAlert, House, RotateCw } from 'lucide-react'
 import { isRouteErrorResponse, useNavigate, useRouteError } from 'react-router-dom'
 import { Button } from '../ui/button'
 import { JSX } from 'react'
+import { isAppError } from '@renderer/lib/app-error'
 
 function GlobalError(): JSX.Element {
   const error = useRouteError()
@@ -12,6 +13,7 @@ function GlobalError(): JSX.Element {
   let errorCode = 'UNKNOWN'
 
   if (isRouteErrorResponse(error)) {
+    console.log(error, 'error nih wkwk')
     errorCode = error.status.toString()
     if (error.status === 404) {
       errorTitle = 'Halaman Tidak Ditemukan'
@@ -22,6 +24,9 @@ function GlobalError(): JSX.Element {
     } else {
       errorMessage = error.statusText
     }
+  } else if (isAppError(error)) {
+    errorCode = error.code
+    errorMessage = error.message
   } else if (error instanceof Error) {
     errorMessage = error.message
     if (
