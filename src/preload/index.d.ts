@@ -1,24 +1,31 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
+import { ApiResponse } from 'src/types/api.type'
+import type {
+  CameraStatus,
+  CaptureCamera,
+  ConnectCamera,
+  CreateCameraSession,
+  DisconnectCamera,
+  LiveViewAction,
+  LiveViewFrame,
+  PingCamera
+} from 'src/types/camera.type'
 
-interface User {
-  id: number
-  name: string
-  email: string
-  phone: string
-  website: string
-}
-
-interface FetchUsersResponse {
-  success: boolean
-  data?: User[]
-  error?: string
+export interface IElectronAPI {
+  pingCamera: () => Promise<ApiResponse<PingCamera>>
+  getCameraStatus: (sessionId: string) => Promise<ApiResponse<CameraStatus>>
+  connectCamera: (sessionId: string) => Promise<ApiResponse<ConnectCamera>>
+  disconnectCamera: (sessionId: string) => Promise<ApiResponse<DisconnectCamera>>
+  captureImage: (sessionId: string) => Promise<ApiResponse<CaptureCamera>>
+  startLiveView: (sessionId: string) => Promise<ApiResponse<LiveViewAction>>
+  stopLiveView: (sessionId: string) => Promise<ApiResponse<LiveViewAction>>
+  getLiveViewFrame: (sessionId: string) => Promise<ApiResponse<LiveViewFrame>>
+  createCameraSession: () => Promise<ApiResponse<CreateCameraSession>>
 }
 
 declare global {
   interface Window {
     electron: ElectronAPI
-    api: {
-      fetchUsers: () => Promise<FetchUsersResponse>
-    }
+    api: IElectronAPI
   }
 }

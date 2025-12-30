@@ -1,9 +1,20 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
+import { IElectronAPI } from './index.d'
+import { ipcCameraKeys } from '../main/handlers/camera.config'
 
 // Custom APIs for renderer
-const api = {
-  fetchUsers: () => ipcRenderer.invoke('fetch-users')
+const api: IElectronAPI = {
+  pingCamera: () => ipcRenderer.invoke(ipcCameraKeys.ping),
+  getCameraStatus: (sessionId: string) => ipcRenderer.invoke(ipcCameraKeys.cameraStatus, sessionId),
+  connectCamera: (sessionId: string) => ipcRenderer.invoke(ipcCameraKeys.connect, sessionId),
+  disconnectCamera: (sessionId: string) => ipcRenderer.invoke(ipcCameraKeys.disconnect, sessionId),
+  captureImage: (sessionId: string) => ipcRenderer.invoke(ipcCameraKeys.capture, sessionId),
+  startLiveView: (sessionId: string) => ipcRenderer.invoke(ipcCameraKeys.startLiveView, sessionId),
+  stopLiveView: (sessionId: string) => ipcRenderer.invoke(ipcCameraKeys.stopLiveView, sessionId),
+  // prettier-ignore
+  getLiveViewFrame: (sessionId: string) => ipcRenderer.invoke(ipcCameraKeys.liveViewFrame, sessionId),
+  createCameraSession: () => ipcRenderer.invoke(ipcCameraKeys.createSession)
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

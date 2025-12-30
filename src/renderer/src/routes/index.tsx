@@ -1,35 +1,24 @@
-import Loading from '@renderer/components/loading'
-import NetworkStatus from '@renderer/components/network-status'
+import GlobalError from '@renderer/components/common/global-error'
 import ProtectedRoute from '@renderer/components/protected-route'
-import Navigation from '@renderer/layouts/navigation'
-import ErrorPage from '@renderer/pages/error-page'
-import { lazy, Suspense } from 'react'
+import Loadable from '@renderer/layouts/loadable'
+import RootWrapper from '@renderer/layouts/root-wrapper'
+import { lazy } from 'react'
 import { createHashRouter, Navigate } from 'react-router-dom'
 
 const Home = lazy(() => import('../pages/home/home.index'))
 const Capture = lazy(() => import('../pages/capture/capture.index'))
 const Login = lazy(() => import('../pages/login/login.index'))
 const Register = lazy(() => import('../pages/register/register.index'))
-
-const Loadable = (Component: React.ComponentType) => (
-  <Suspense fallback={<Loading />}>
-    <Component />
-  </Suspense>
-)
-
-const RootWrapper = () => (
-  <>
-    <NetworkStatus />
-    <Navigation />
-  </>
-)
+const TesIndex = lazy(() => import('../pages/tes.index'))
+const CameraControl = lazy(() => import('../pages/camera-control.index'))
+const CreateSession = lazy(() => import('../pages/create-session/create.session.index'))
 
 // Define the routes using createHashRouter
 const router = createHashRouter([
   {
     path: '/',
     element: <RootWrapper />,
-    errorElement: <ErrorPage />,
+    errorElement: <GlobalError />,
     children: [
       // Protected routes
       {
@@ -38,6 +27,10 @@ const router = createHashRouter([
           {
             index: true,
             element: Loadable(Home)
+          },
+          {
+            path: 'create-session',
+            element: Loadable(CreateSession)
           },
           {
             path: 'live-capture',
@@ -54,6 +47,14 @@ const router = createHashRouter([
       {
         path: 'register',
         element: Loadable(Register)
+      },
+      {
+        path: 'tes',
+        element: Loadable(TesIndex)
+      },
+      {
+        path: 'camera-control',
+        element: Loadable(CameraControl)
       },
 
       // Redirect kalau halaman tidak ditemukan
