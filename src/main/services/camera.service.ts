@@ -4,6 +4,7 @@ import type {
   CameraStatus,
   CaptureCamera,
   ConnectCamera,
+  CreateCameraSession,
   DisconnectCamera,
   LiveViewAction,
   LiveViewFrame,
@@ -229,6 +230,32 @@ export const CameraService = {
             message: error instanceof Error ? error.message : 'Invalid frame response format'
           }
         } as ApiResponse<LiveViewFrame>
+      }
+    }
+
+    return response
+  },
+
+  async createCameraSession() {
+    const response = await apiRequest<CreateCameraSession>({
+      url: '/sessions/create',
+      method: 'POST'
+    })
+
+    if (response.success && response.data) {
+      try {
+        const validated = schema.createSessionSchema.parse(response.data)
+        return { ...response, data: validated }
+      } catch (error) {
+        return {
+          success: false,
+          data: null,
+          error: {
+            code: 'VALIDATION_ERROR',
+            message:
+              error instanceof Error ? error.message : 'Invalid create session response format'
+          }
+        } as ApiResponse<CreateCameraSession>
       }
     }
 

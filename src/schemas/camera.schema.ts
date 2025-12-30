@@ -8,7 +8,9 @@ const cameraStatusSchema = z.object({
   state: z.enum(['Disconnected', 'Connected', 'LiveView', 'Capturing']),
   isConnected: z.boolean(),
   isLiveView: z.boolean(),
-  timestamp: requiredStringSchema
+  timestamp: requiredStringSchema,
+  sessionId: requiredStringSchema,
+  photoCount: z.number()
 })
 
 const connectCameraSchema = z.object({
@@ -33,6 +35,12 @@ const captureCameraSchema = z.object({
   timestamp: requiredStringSchema
 })
 
+const createSessionSchema = z.object({
+  sessionId: requiredStringSchema,
+  message: requiredStringSchema,
+  status: cameraStatusSchema
+})
+
 export {
   pingCameraSchema,
   cameraStatusSchema,
@@ -40,5 +48,6 @@ export {
   disconnectCameraSchema,
   liveViewActionSchema,
   liveViewFrameSchema,
-  captureCameraSchema
+  captureCameraSchema,
+  createSessionSchema
 }

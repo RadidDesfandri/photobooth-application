@@ -3,6 +3,7 @@ import {
   cameraStatusSchema,
   captureCameraSchema,
   connectCameraSchema,
+  createSessionSchema,
   disconnectCameraSchema,
   liveViewActionSchema,
   liveViewFrameSchema,
@@ -16,6 +17,7 @@ type DisconnectCamera = z.infer<typeof disconnectCameraSchema>
 type CaptureCamera = z.infer<typeof captureCameraSchema>
 type LiveViewAction = z.infer<typeof liveViewActionSchema>
 type LiveViewFrame = z.infer<typeof liveViewFrameSchema>
+type CreateCameraSession = z.infer<typeof createSessionSchema>
 
 export type {
   PingCamera,
@@ -24,5 +26,6 @@ export type {
   DisconnectCamera,
   CaptureCamera,
   LiveViewAction,
-  LiveViewFrame
+  LiveViewFrame,
+  CreateCameraSession
 }

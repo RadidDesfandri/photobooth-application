@@ -6,7 +6,8 @@ const ipcCameraKeys = {
   capture: 'camera-capture' as const,
   startLiveView: 'camera-liveview-start' as const,
   stopLiveView: 'camera-liveview-stop' as const,
-  liveViewFrame: 'camera-liveview-frame' as const
+  liveViewFrame: 'camera-liveview-frame' as const,
+  createSession: 'camera-create-session' as const
 }
 
 export { ipcCameraKeys }

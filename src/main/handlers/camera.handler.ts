@@ -130,6 +130,22 @@ const registerCameraHandler = (): void => {
       }
     }
   })
+
+  ipcMain.handle(ipcCameraKeys.createSession, async () => {
+    try {
+      return await CameraService.createCameraSession()
+    } catch (error) {
+      console.error('[IPC Error] create-camera-session:', error)
+      return {
+        success: false,
+        data: null,
+        error: {
+          code: 'IPC_ERROR',
+          message: error instanceof Error ? error.message : 'Unknown IPC error'
+        }
+      }
+    }
+  })
 }
 
 export { registerCameraHandler }

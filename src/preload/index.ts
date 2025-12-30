@@ -13,7 +13,8 @@ const api: IElectronAPI = {
   startLiveView: (sessionId: string) => ipcRenderer.invoke(ipcCameraKeys.startLiveView, sessionId),
   stopLiveView: (sessionId: string) => ipcRenderer.invoke(ipcCameraKeys.stopLiveView, sessionId),
   // prettier-ignore
-  getLiveViewFrame: (sessionId: string) => ipcRenderer.invoke(ipcCameraKeys.liveViewFrame, sessionId)
+  getLiveViewFrame: (sessionId: string) => ipcRenderer.invoke(ipcCameraKeys.liveViewFrame, sessionId),
+  createCameraSession: () => ipcRenderer.invoke(ipcCameraKeys.createSession)
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

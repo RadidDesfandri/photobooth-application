@@ -1,13 +1,11 @@
 import { useAutoConnectCamera } from '@renderer/hooks/useCamera'
 import BaseLayout from '@renderer/layouts/base-layout'
 import { JSX } from 'react'
-import { useParams } from 'react-router-dom'
 import CameraControl from './camera.control'
 import CaptureHeader from './capture.header'
 
 function CaptureIndex(): JSX.Element {
-  const { sessionId } = useParams<{ sessionId: string }>()
-  const { statusData, isLoading, isConnecting, isConnected } = useAutoConnectCamera(sessionId!)
+  const { statusData, isLoading, isConnecting, isConnected } = useAutoConnectCamera()
 
   if (isLoading || !statusData?.data) {
     return <div className="min-h-screen">Loading...</div>

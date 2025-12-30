@@ -33,7 +33,7 @@ const router = createHashRouter([
             element: Loadable(CreateSession)
           },
           {
-            path: 'live-capture/:sessionId',
+            path: 'live-capture',
             element: Loadable(Capture)
           }
         ]

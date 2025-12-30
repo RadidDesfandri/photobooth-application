@@ -4,6 +4,7 @@ import { useElementFullScreen } from '@renderer/hooks/useElementFullScreen'
 import { useFocusPoint } from '@renderer/hooks/useFocusPoint'
 import { useSettingsVisibility } from '@renderer/hooks/useSettingsVisibility'
 import { cn } from '@renderer/lib/utils'
+import { useCameraStore } from '@renderer/store/useCameraStore'
 import { JSX, useCallback } from 'react'
 import { CameraStatus } from 'src/types/camera.type'
 import {
@@ -19,22 +20,18 @@ import {
   TakePhotoButton
 } from './camera.comp'
 import { SettingArrow, SettingPanelBackdrop } from './camera.setting'
-import { useCameraStore } from '@renderer/store/useCameraStore'
-import { useParams } from 'react-router-dom'
 
 interface CameraControlProps {
   statusData: CameraStatus
 }
 
 const CameraControl = ({ statusData }: CameraControlProps): JSX.Element => {
-  const { sessionId } = useParams<{ sessionId: string }>()
-
-  const { data: frameData } = useLiveViewFrame(sessionId!, {
+  const { data: frameData } = useLiveViewFrame({
     enabled: statusData.isLiveView,
     refetchInterval: 1000 / 30 // 30 FPS
   })
 
-  const { mutate: capture, isPending: isCapturing } = useCaptureImage(sessionId!)
+  const { mutate: capture, isPending: isCapturing } = useCaptureImage()
 
   const { focusPoint, handleFocusClick } = useFocusPoint()
   const { elementRef, isFullscreen, toggleFullscreen } = useElementFullScreen()

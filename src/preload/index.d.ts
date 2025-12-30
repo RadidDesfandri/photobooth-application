@@ -4,6 +4,7 @@ import type {
   CameraStatus,
   CaptureCamera,
   ConnectCamera,
+  CreateCameraSession,
   DisconnectCamera,
   LiveViewAction,
   LiveViewFrame,
@@ -19,6 +20,7 @@ export interface IElectronAPI {
   startLiveView: (sessionId: string) => Promise<ApiResponse<LiveViewAction>>
   stopLiveView: (sessionId: string) => Promise<ApiResponse<LiveViewAction>>
   getLiveViewFrame: (sessionId: string) => Promise<ApiResponse<LiveViewFrame>>
+  createCameraSession: () => Promise<ApiResponse<CreateCameraSession>>
 }
 
 declare global {

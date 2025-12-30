@@ -1,5 +1,6 @@
 import { cameraKeys } from '@renderer/config/camera.config'
 import { AppError } from '@renderer/lib/app-error'
+import { useSessionStore } from '@renderer/store/useSessionStore'
 import {
   useMutation,
   UseMutationResult,
@@ -8,11 +9,13 @@ import {
   UseQueryResult
 } from '@tanstack/react-query'
 import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { ApiResponse } from 'src/types/api.type'
 import {
   CameraStatus,
   CaptureCamera,
   ConnectCamera,
+  CreateCameraSession,
   DisconnectCamera,
   LiveViewAction,
   LiveViewFrame,
@@ -41,17 +44,16 @@ const usePingCamera = (): UseQueryResult<ApiResponse<PingCamera>, Error> => {
   })
 }
 
-const useCameraStatus = (
-  sessionId: string,
-  options?: {
-    enabled?: boolean
-    refetchInterval?: number
-  }
-): UseQueryResult<ApiResponse<CameraStatus>, Error> => {
+const useCameraStatus = (options?: {
+  enabled?: boolean
+  refetchInterval?: number
+}): UseQueryResult<ApiResponse<CameraStatus>, Error> => {
+  const sessionId = useSessionStore((state) => state.sessionId)
+
   return useQuery({
     queryKey: [...cameraKeys.status(), sessionId],
     queryFn: async () => {
-      const result = await window.api.getCameraStatus(sessionId)
+      const result = await window.api.getCameraStatus(sessionId!)
 
       if (!result.success) {
         throw new AppError(
@@ -71,17 +73,16 @@ const useCameraStatus = (
   })
 }
 
-const useLiveViewFrame = (
-  sessionId: string,
-  options?: {
-    enabled?: boolean
-    refetchInterval?: number
-  }
-): UseQueryResult<ApiResponse<LiveViewFrame>, Error> => {
+const useLiveViewFrame = (options?: {
+  enabled?: boolean
+  refetchInterval?: number
+}): UseQueryResult<ApiResponse<LiveViewFrame>, Error> => {
+  const sessionId = useSessionStore((state) => state.sessionId)
+
   return useQuery({
     queryKey: [...cameraKeys.liveViewFrame(), sessionId],
     queryFn: async () => {
-      const result = await window.api.getLiveViewFrame(sessionId)
+      const result = await window.api.getLiveViewFrame(sessionId!)
 
       return result
     },
@@ -89,19 +90,23 @@ const useLiveViewFrame = (
     retryDelay: 500,
     staleTime: 0, // Always fresh
     refetchOnWindowFocus: false,
-    enabled: (options?.enabled ?? false) && !!sessionId, // Default disabled, harus di-enable manual
+    enabled: options?.enabled ?? false, // Default disabled, harus di-enable manual
     refetchInterval: options?.refetchInterval ?? 100 // Default 100ms untuk smooth video
   })
 }
 
-const useConnectCamera = (
-  sessionId: string
-): UseMutationResult<ApiResponse<ConnectCamera>, Error, void, unknown> => {
+const useConnectCamera = (): UseMutationResult<
+  ApiResponse<ConnectCamera>,
+  Error,
+  void,
+  unknown
+> => {
   const queryClient = useQueryClient()
+  const sessionId = useSessionStore((state) => state.sessionId)
 
   return useMutation({
     mutationFn: async () => {
-      const result = await window.api.connectCamera(sessionId)
+      const result = await window.api.connectCamera(sessionId!)
 
       return result
     },
@@ -132,26 +137,30 @@ const useDisconnectCamera = (
   })
 }
 
-const useCaptureImage = (
-  sessionId: string
-): UseMutationResult<ApiResponse<CaptureCamera>, Error, void, unknown> => {
+const useCaptureImage = (): UseMutationResult<ApiResponse<CaptureCamera>, Error, void, unknown> => {
+  const sessionId = useSessionStore((state) => state.sessionId)
+
   return useMutation({
     mutationFn: async () => {
-      const result = await window.api.captureImage(sessionId)
+      const result = await window.api.captureImage(sessionId!)
 
       return result
     }
   })
 }
 
-const useStartLiveView = (
-  sessionId: string
-): UseMutationResult<ApiResponse<LiveViewAction>, Error, void, unknown> => {
+const useStartLiveView = (): UseMutationResult<
+  ApiResponse<LiveViewAction>,
+  Error,
+  void,
+  unknown
+> => {
+  const sessionId = useSessionStore((state) => state.sessionId)
   const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: async () => {
-      const result = await window.api.startLiveView(sessionId)
+      const result = await window.api.startLiveView(sessionId!)
 
       return result
     },
@@ -163,14 +172,18 @@ const useStartLiveView = (
   })
 }
 
-const useStopLiveView = (
-  sessionId: string
-): UseMutationResult<ApiResponse<LiveViewAction>, Error, void, unknown> => {
+const useStopLiveView = (): UseMutationResult<
+  ApiResponse<LiveViewAction>,
+  Error,
+  void,
+  unknown
+> => {
+  const sessionId = useSessionStore((state) => state.sessionId)
   const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: async () => {
-      const result = await window.api.stopLiveView(sessionId)
+      const result = await window.api.stopLiveView(sessionId!)
 
       return result
     },
@@ -182,19 +195,17 @@ const useStopLiveView = (
   })
 }
 
-const useAutoConnectCamera = (
-  sessionId: string
-): {
+const useAutoConnectCamera = (): {
   statusData: ApiResponse<CameraStatus> | undefined
   isLoading: boolean
   isConnecting: boolean
   isConnected: boolean
 } => {
-  const statusQuery = useCameraStatus(sessionId, {
+  const statusQuery = useCameraStatus({
     refetchInterval: 2000
   })
 
-  const { mutate: connect, isPending: isPendingConnect } = useConnectCamera(sessionId)
+  const { mutate: connect, isPending: isPendingConnect } = useConnectCamera()
 
   const isConnected = statusQuery.data?.data?.isConnected
   const shouldConnect = !statusQuery.isLoading && !isConnected && !isPendingConnect
@@ -213,6 +224,35 @@ const useAutoConnectCamera = (
   }
 }
 
+const useCreateSession = (): UseMutationResult<
+  ApiResponse<CreateCameraSession>,
+  Error,
+  void,
+  unknown
+> => {
+  const queryClient = useQueryClient()
+  const navigate = useNavigate()
+  const setSessionId = useSessionStore((state) => state.setSessionId)
+
+  return useMutation({
+    mutationFn: async () => {
+      const result = await window.api.createCameraSession()
+
+      return result
+    },
+    onSuccess: (result) => {
+      if (result.success) {
+        setSessionId(result.data!.sessionId)
+        navigate(`/live-capture`)
+        queryClient.invalidateQueries({ queryKey: cameraKeys.status() })
+      }
+    },
+    onError: (error) => {
+      console.log(error)
+    }
+  })
+}
+
 export {
   usePingCamera,
   useCameraStatus,
@@ -222,5 +262,6 @@ export {
   useCaptureImage,
   useStartLiveView,
   useStopLiveView,
-  useAutoConnectCamera
+  useAutoConnectCamera,
+  useCreateSession
 }
